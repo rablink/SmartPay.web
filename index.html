@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartPay - Solusi Bisnis Pulsa & PPOB</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #ffffff;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(30, 58, 138, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(15, 23, 42, 1) 0px, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Glassmorphism Dark Theme */
+        .glass-card {
+            background: rgba(30, 41, 59, 0.4); /* Slate 800 with opacity */
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(30, 41, 59, 0.7);
+            transform: translateY(-10px);
+            border-color: rgba(96, 165, 250, 0.3); /* Blue 400 */
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Animated Blobs for Background */
+        .blob {
+            position: absolute;
+            filter: blur(80px);
+            z-index: -1;
+            opacity: 0.6;
+            animation: moveBlob 10s infinite alternate;
+        }
+        @keyframes moveBlob {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(20px, -20px) scale(1.1); }
+        }
+
+        /* Hero Shape matching body bg */
+        .hero-shape {
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            overflow: hidden;
+            line-height: 0;
+        }
+        .hero-shape svg {
+            display: block;
+            width: calc(100% + 1.3px);
+            height: 120px;
+        }
+        .hero-shape .shape-fill {
+            fill: #0f172a; /* Matches body bg */
+        }
+
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .glow-text {
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Table Styling for Dark Mode */
+        .table-row-hover:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: #60a5fa;
+            transition: width 0.3s;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 5px;
+            border: 2px solid #0f172a;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500 selection:text-white">
+
+    <!-- Ambient Background Blobs -->
+    <div class="blob bg-blue-600 w-96 h-96 rounded-full top-0 left-0"></div>
+    <div class="blob bg-indigo-900 w-96 h-96 rounded-full bottom-0 right-0 animation-delay-2000"></div>
+
+    <!-- Navbar -->
+    <nav class="fixed w-full z-50 transition-all duration-300 py-5 bg-slate-900/80 backdrop-blur-md border-b border-white/5" id="navbar">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/30">
+                    <i class="fas fa-signal text-white"></i>
+                </div>
+                <span class="text-2xl font-bold tracking-tight text-white">Smart<span class="text-blue-400">Pay</span></span>
+            </div>
+            
+            <div class="hidden lg:flex space-x-8 text-slate-300 font-medium text-sm uppercase tracking-wide">
+                <a href="#" class="nav-link hover:text-white transition-colors">Beranda</a>
+                <a href="#layanan" class="nav-link hover:text-white transition-colors">Fitur</a>
+                <a href="#harga" class="nav-link hover:text-white transition-colors">Harga</a>
+                <a href="#faq" class="nav-link hover:text-white transition-colors">Bantuan</a>
+            </div>
+
+            <div class="hidden lg:block">
+                <a href="#" class="group relative px-6 py-2.5 rounded-full bg-blue-600 text-white font-semibold shadow-lg shadow-blue-600/20 hover:bg-blue-500 transition-all overflow-hidden">
+                    <span class="relative z-10 group-hover:tracking-wider transition-all duration-300">Login Member</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-blue-400 to-blue-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </a>
+            </div>
+
+            <button class="lg:hidden text-white text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-40 pb-32 px-6 min-h-screen flex items-center">
+        <div class="container mx-auto flex flex-col lg:flex-row items-center relative z-10">
+            <div class="lg:w-1/2 mb-16 lg:mb-0" data-aos="fade-right" data-aos-duration="1000">
+                <div class="inline-block px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-semibold text-sm mb-6 animate-pulse">
+                    <i class="fas fa-star mr-2 text-yellow-400"></i> Server Pulsa Terpercaya 2024
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-extrabold mb-6 leading-tight">
+                    Bisnis Digital <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 glow-text">Tanpa Batas</span>
+                </h1>
+                <p class="text-lg text-slate-400 mb-8 max-w-lg leading-relaxed">
+                    Platform distribusi pulsa dan PPOB dengan infrastruktur server awan yang stabil, cepat, dan 100% aman untuk menunjang transaksi harian Anda.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                    <a href="https://play.google.com/store/apps/details?id=id.serpul.smartpay" class="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-500 rounded-xl font-bold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:-translate-y-1 transition-all flex items-center gap-2">
+                        <i class="fab fa-android text-xl"></i> Download Aplikasi
+                    </a>
+                    <a href="https://wa.me/6285697131227" class="px-8 py-4 bg-slate-800 border border-slate-700 rounded-xl font-bold hover:bg-slate-700 transition-all flex items-center gap-2">
+                        Panduan Agen
+                    </a>
+                </div>
+                
+                <div class="mt-12 flex items-center gap-6 text-slate-400 text-sm font-medium">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check-circle text-green-400"></i> Transaksi 24 Jam
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check-circle text-green-400"></i> CS Responsif
+                    </div>
+                </div>
+            </div>
+            
+            <div class="lg:w-1/2 flex justify-center relative" data-aos="zoom-in" data-aos-duration="1200">
+                <!-- Abstract Glow Behind Phone -->
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-3xl animate-pulse"></div>
+                
+                <div class="relative float-animation z-10">
+                    <div class="relative w-[300px] h-[600px] bg-slate-900 rounded-[3rem] border-8 border-slate-800 shadow-2xl overflow-hidden">
+                        <!-- Mockup Screen Content -->
+                        <div class="h-full w-full bg-slate-900 relative">
+                            <!-- Top Bar -->
+                            <div class="h-32 bg-gradient-to-br from-blue-600 to-blue-800 p-6 rounded-b-[2rem]">
+                                <div class="flex justify-between items-center text-white mt-4">
+                                    <div>
+                                        <div class="text-xs opacity-80">Saldo Anda</div>
+                                        <div class="text-xl font-bold">Rp 1.540.000</div>
+                                    </div>
+                                    <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-bell"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Menu Icons -->
+                            <div class="grid grid-cols-4 gap-4 p-6 mt-2">
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400">Pulsa</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-green-500/10 rounded-xl flex items-center justify-center text-green-400">
+                                        <i class="fas fa-globe"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400">Data</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-yellow-500/10 rounded-xl flex items-center justify-center text-yellow-400">
+                                        <i class="fas fa-bolt"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400">PLN</span>
+                                </div>
+                                <div class="flex flex-col items-center gap-2">
+                                    <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400">
+                                        <i class="fas fa-gamepad"></i>
+                                    </div>
+                                    <span class="text-[10px] text-slate-400">Game</span>
+                                </div>
+                            </div>
+                            <!-- Banner -->
+                            <div class="px-6 mt-2">
+                                <div class="w-full h-32 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center text-white font-bold text-center p-4">
+                                    Promo Gajian<br>Diskon 50%
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-10 border-y border-white/5 bg-slate-800/30 backdrop-blur-sm">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-white/5">
+                <div data-aos="fade-up" data-aos-delay="0">
+                    <div class="text-3xl font-bold text-white mb-1">15K+</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Mitra Agen</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="100">
+                    <div class="text-3xl font-bold text-white mb-1">500+</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Produk Digital</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="200">
+                    <div class="text-3xl font-bold text-white mb-1">24/7</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Layanan CS</div>
+                </div>
+                <div data-aos="fade-up" data-aos-delay="300">
+                    <div class="text-3xl font-bold text-white mb-1">0.5s</div>
+                    <div class="text-sm text-slate-400 uppercase tracking-widest">Kecepatan</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="layanan" class="py-24 relative">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-16" data-aos="fade-up">
+                <h2 class="text-3xl lg:text-5xl font-bold mb-4">Layanan Unggulan</h2>
+                <div class="w-20 h-1.5 bg-blue-500 mx-auto rounded-full mb-6"></div>
+                <p class="text-slate-400 max-w-2xl mx-auto">Kami menyediakan berbagai produk digital dengan harga termurah di kelasnya.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-14 h-14 bg-blue-500/20 text-blue-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Pulsa All Operator</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Tersedia pulsa reguler dan transfer untuk Telkomsel, Indosat, XL, Axis, Three, dan Smartfren.</p>
+                    <a href="#" class="text-blue-400 font-semibold text-sm hover:text-blue-300 flex items-center gap-2">Detail Harga <i class="fas fa-arrow-right text-xs"></i></a>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="glass-card p-8 rounded-3xl relative overflow-hidden group" data-aos="fade-up" data-aos-delay="200">
+                    <div class="absolute top-0 right-0 p-3">
+                        <span class="bg-red-500/20 text-red-400 text-[10px] font-bold px-2 py-1 rounded">HOT</span>
+                    </div>
+                    <div class="w-14 h-14 bg-purple-500/20 text-purple-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Topup Game</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Diamond Mobile Legends, Free Fire, PUBG, Valorant hingga Genshin Impact proses 1 detik.</p>
+                    <a href="#" class="text-purple-400 font-semibold text-sm hover:text-purple-300 flex items-center gap-2">Lihat List Game <i class="fas fa-arrow-right text-xs"></i></a>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="300">
+                    <div class="w-14 h-14 bg-yellow-500/20 text-yellow-400 rounded-2xl flex items-center justify-center text-2xl mb-6">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Token & Tagihan</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">Isi token listrik PLN, bayar BPJS, PDAM, dan internet bulanan tanpa perlu antri.</p>
+                    <a href="#" class="text-yellow-400 font-semibold text-sm hover:text-yellow-300 flex items-center gap-2">Cek Fee PPOB <i class="fas fa-arrow-right text-xs"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Table -->
+    <section id="harga" class="py-24 bg-slate-900/50">
+        <div class="container mx-auto px-6">
+            <div class="bg-slate-800/40 border border-white/5 backdrop-blur-xl rounded-[2.5rem] p-8 md:p-12 overflow-hidden shadow-2xl shadow-black/20" data-aos="zoom-in">
+                <div class="flex flex-col md:flex-row justify-between items-center mb-10 gap-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white">Update Harga Realtime</h2>
+                        <p class="text-slate-400 text-sm mt-2">Harga dapat berubah sewaktu-waktu mengikuti kebijakan provider.</p>
+                    </div>
+                    <div class="flex bg-slate-900/80 p-1 rounded-xl">
+                        <button class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold text-sm shadow-lg">Pulsa</button>
+                        <button class="px-6 py-2 text-slate-400 hover:text-white rounded-lg font-semibold text-sm transition-colors">Data</button>
+                        <button class="px-6 py-2 text-slate-400 hover:text-white rounded-lg font-semibold text-sm transition-colors">Game</button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="text-slate-400 text-xs uppercase tracking-wider border-b border-white/5">
+                                <th class="px-6 py-4 font-semibold">Produk</th>
+                                <th class="px-6 py-4 font-semibold">Kode</th>
+                                <th class="px-6 py-4 text-right font-semibold">Harga Agen</th>
+                                <th class="px-6 py-4 text-center font-semibold">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/5 text-sm">
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-5 flex items-center gap-3">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Telkomsel_2021_icon.svg" class="w-8 h-8 rounded-full bg-white p-1" alt="Tsel">
+                                    <span class="font-bold text-white">Telkomsel 5.000</span>
+                                </td>
+                                <td class="px-6 py-5 text-slate-400 font-mono">TN5</td>
+                                <td class="px-6 py-5 text-right font-bold text-blue-400">Rp 5.350</td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20">LANCAR</span>
+                                </td>
+                            </tr>
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-5 flex items-center gap-3">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Indosat_Ooredoo_Hutchison.svg" class="w-8 h-8 rounded-full bg-white p-1" alt="Isat">
+                                    <span class="font-bold text-white">Indosat 10.000</span>
+                                </td>
+                                <td class="px-6 py-5 text-slate-400 font-mono">IS10</td>
+                                <td class="px-6 py-5 text-right font-bold text-blue-400">Rp 10.125</td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20">LANCAR</span>
+                                </td>
+                            </tr>
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-5 flex items-center gap-3">
+                                    <img src="https://upload.wikimedia.org/wikipedia/commons/9/9e/XL_Axiata_logo.svg" class="w-8 h-8 rounded-full bg-white p-1" alt="XL">
+                                    <span class="font-bold text-white">XL Axiata 25.000</span>
+                                </td>
+                                <td class="px-6 py-5 text-slate-400 font-mono">XN25</td>
+                                <td class="px-6 py-5 text-right font-bold text-blue-400">Rp 24.950</td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20">LANCAR</span>
+                                </td>
+                            </tr>
+                            <tr class="table-row-hover transition-colors">
+                                <td class="px-6 py-5 flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold text-xs">P</div>
+                                    <span class="font-bold text-white">Token PLN 20</span>
+                                </td>
+                                <td class="px-6 py-5 text-slate-400 font-mono">PLN20</td>
+                                <td class="px-6 py-5 text-right font-bold text-blue-400">Rp 20.050</td>
+                                <td class="px-6 py-5 text-center">
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-[10px] font-bold border border-green-500/20">LANCAR</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button class="text-slate-400 hover:text-white font-medium text-sm transition-colors border-b border-transparent hover:border-white pb-0.5">Lihat Selengkapnya</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download CTA -->
+    <section class="py-24 relative overflow-hidden">
+        <div class="absolute inset-0 bg-blue-600/5 -skew-y-3 z-0"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="bg-gradient-to-r from-blue-900 to-slate-900 border border-blue-500/30 rounded-[3rem] p-12 lg:p-20 text-center relative overflow-hidden" data-aos="flip-up">
+                <!-- Shine Effect -->
+                <div class="absolute top-0 right-0 -mr-20 -mt-20 w-64 h-64 bg-blue-500/20 blur-[100px] rounded-full"></div>
+                <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-64 h-64 bg-purple-500/20 blur-[100px] rounded-full"></div>
+
+                <h2 class="text-3xl lg:text-5xl font-bold mb-6 text-white">Siap Untuk Keuntungan Lebih?</h2>
+                <p class="text-blue-200 text-lg mb-10 max-w-2xl mx-auto">Gabung sekarang gratis. Deposit mulai 50rb. Tidak ada target penjualan. Cocok untuk konter, warung, atau pemakaian pribadi.</p>
+                
+                <div class="flex flex-col sm:flex-row justify-center gap-6">
+                    <button class="px-10 py-4 bg-white text-blue-900 rounded-xl font-bold hover:bg-blue-50 transition-all transform hover:scale-105 shadow-xl">
+                        Daftar Gratis
+                    </button>
+                  <a href="https://wa.me/6285697131227"   <button class="px-10 py-4 bg-transparent border border-white/20 text-white rounded-xl font-bold hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp text-xl"></i> Chat Admin
+                    </button> </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 border-t border-white/5 pt-20 pb-10">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-6">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-signal text-white"></i>
+                        </div>
+                        <span class="text-xl font-bold text-white tracking-tight">Smart Pay</span>
+                    </div>
+                    <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                        Distributor pulsa elektrik all operator dengan sistem server yang handal dan stabil.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all border border-slate-800"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all border border-slate-800"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 bg-slate-900 rounded-full flex items-center justify-center text-slate-400 hover:bg-sky-500 hover:text-white transition-all border border-slate-800"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-bold mb-6">Produk</h4>
+                    <ul class="space-y-3 text-slate-500 text-sm">
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Pulsa & Data</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Token PLN</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Voucher Game</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Topup E-Money</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Legalitas</h4>
+                    <ul class="space-y-3 text-slate-500 text-sm">
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Syarat & Ketentuan</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Kebijakan Privasi</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Tentang Kami</a></li>
+                        <li><a href="#" class="hover:text-blue-400 transition-colors">Karir</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-6">Hubungi Kami</h4>
+                    <ul class="space-y-4 text-slate-500 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-map-marker-alt mt-1 text-blue-500"></i>
+                            <span>Jl.raya naringgul-kp Cimanggu no 20 rt001 rw002,naringgul,cianjur,jawabarat</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-phone text-blue-500"></i>
+                            <span>085697131227</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fas fa-envelope text-blue-500"></i>
+                            <span>support@smartpay.id</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-slate-600">
+                <p>&copy; 2026 PT.Alisha Payment Centre. All Rights Reserved.</p>
+                <div class="flex gap-6 mt-4 md:mt-0">
+                    <span>Server v2.4.0</span>
+                    <span class="flex items-center gap-2"><i class="fas fa-circle text-green-500 text-[6px]"></i> System Normal</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- GSAP & AOS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            easing: 'ease-out-quad',
+            once: true,
+        });
+
+        // Navbar Scroll Effect
+        const nav = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                nav.classList.add('bg-slate-900/90', 'shadow-2xl', 'border-b', 'border-white/5');
+                nav.classList.remove('py-5');
+                nav.classList.add('py-3');
+            } else {
+                nav.classList.remove('bg-slate-900/90', 'shadow-2xl', 'border-b', 'border-white/5');
+                nav.classList.add('py-5');
+                nav.classList.remove('py-3');
+            }
+        });
+    </script>
+</body>
+</html>
